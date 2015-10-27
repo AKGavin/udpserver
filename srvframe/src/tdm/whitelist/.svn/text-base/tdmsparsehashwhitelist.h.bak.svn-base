@@ -1,0 +1,44 @@
+/*
+ * tdmsparsehashwhitelist.h
+ *
+ *  Created on: Dec 11, 2013
+ *      Author: root
+ */
+
+#ifndef TDMSPARSEHASHWHITELIST_H_
+#define TDMSPARSEHASHWHITELIST_H_
+
+#include "tdmwhitelist.h"
+#include </usr/local/include/sparsehash/sparse_hash_map>
+
+
+extern google::sparse_hash_map<string, whiteList_data_t *> ThunderWhiteList;
+extern google::sparse_hash_map<string, whiteList_data_t *> HttpWhiteList;
+
+class CTDMSparseHashWhiteList : public CTDMWhiteList
+{
+public:
+	CTDMSparseHashWhiteList(){};
+	~CTDMSparseHashWhiteList(){};
+
+	int findEntry( protocol_type_t protocol, char* urlhash, whiteList_data_t** whitelistItem ) ;
+	int addEntry( pkg_data_t* data, whiteList_status_t status, whiteList_data_t** whitelistItem ) ;
+	int deleteEntry( protocol_type_t protocol, char* urlHash ) ;
+	int changeEntryStatus( protocol_type_t protocol, char* urlHash, whiteList_status_t status, unsigned long dcmIp, whiteList_data_t** whiteItem ) ;
+	int flushEntries( protocol_type_t ) ;
+
+	int saveAllEntriesToFile( protocol_type_t protocol ) ;
+	int loadAllEntriesFromFile( protocol_type_t protocol );
+};
+
+
+#endif /* TDMSPARSEHASHWHITELIST_H_ */
+
+
+
+
+//google::sparse_hash_map<int, int> smap;
+//smap[i] = i+1;
+//for (google::sparse_hash_map<int,int>::const_iterator it = smap.begin();
+//it != smap.end(); ++it)
+//printf("smap: %d -> %d\n", it->first, it->second);

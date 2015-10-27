@@ -1,0 +1,200 @@
+2013-12-11 04:25:33: Read config file error.
+2013-12-11 04:25:33: Load base conf fail ...
+2013-12-11 04:25:33: The threadid is -1217414288, pid is 0
+2013-12-11 04:25:33: Init recv thread succeed
+2013-12-11 04:25:41: Error entity type 123, CThreadGroup is null , delete the msg
+2013-12-11 04:29:26: Read config file error.
+2013-12-11 04:29:26: Load base conf fail ...
+2013-12-11 04:29:26: The threadid is -1217000592, pid is 0
+2013-12-11 04:29:26: Init recv thread succeed
+2013-12-11 04:31:33: Read config file error.
+2013-12-11 04:31:33: Load base conf fail ...
+2013-12-11 04:31:33: The threadid is -1217651856, pid is 0
+2013-12-11 04:31:33: Init recv thread succeed
+2013-12-11 04:32:32: Read config file error.
+2013-12-11 04:32:32: Load base conf fail ...
+2013-12-11 04:32:32: The threadid is -1217291408, pid is 0
+2013-12-11 04:32:32: Init recv thread succeed
+2013-12-11 04:34:11: Read config file error.
+2013-12-11 04:34:11: Load base conf fail ...
+2013-12-11 04:34:11: The threadid is -1208255632, pid is 0
+2013-12-11 04:34:11: Init recv thread succeed
+2013-12-11 04:34:43: Read config file error.
+2013-12-11 04:34:43: Load base conf fail ...
+2013-12-11 04:34:43: The threadid is -1208255632, pid is 0
+2013-12-11 04:34:43: Init recv thread succeed
+2013-12-11 04:36:12: Read config file error.
+2013-12-11 04:36:12: Load base conf fail ...
+2013-12-11 04:36:12: The threadid is -1217184912, pid is 0
+2013-12-11 04:36:12: Init recv thread succeed
+2013-12-11 04:36:12: The threadid is -1227883664, pid is 0
+2013-12-11 04:36:12: The threadid is -1238582416, pid is 0
+2013-12-11 04:36:12: The threadid is -1249281168, pid is 0
+2013-12-11 04:36:12: The threadid is -1259979920, pid is 0
+2013-12-11 04:36:12: The threadid is -1270678672, pid is 0
+2013-12-11 04:36:12: The threadid is -1281377424, pid is 0
+2013-12-11 04:36:12: The threadid is -1292076176, pid is 0
+2013-12-11 04:36:12: The threadid is -1302774928, pid is 0
+2013-12-11 04:36:12: The threadid is -1313473680, pid is 0
+2013-12-11 04:36:12: The threadid is -1324172432, pid is 0
+2013-12-11 04:36:12: The threadid is -1334871184, pid is 0
+2013-12-11 04:36:12: The threadid is -1345569936, pid is 0
+2013-12-11 04:36:12: The threadid is -1356268688, pid is 0
+2013-12-11 04:36:12: The threadid is -1366967440, pid is 0
+2013-12-11 04:36:12: The threadid is -1377666192, pid is 0
+2013-12-11 04:36:12: The threadid is -1388364944, pid is 0
+2013-12-11 04:36:12: The threadid is -1399063696, pid is 0
+2013-12-11 04:36:12: The threadid is -1409762448, pid is 0
+2013-12-11 04:36:12: The threadid is -1420461200, pid is 0
+2013-12-11 04:36:12: The threadid is -1431159952, pid is 0
+2013-12-11 04:36:12: Init send thread succeed
+2013-12-11 04:36:46: Read config file error.
+2013-12-11 04:36:46: Load base conf fail ...
+2013-12-11 04:36:46: The threadid is -1217365136, pid is 0
+2013-12-11 04:36:46: Init recv thread succeed
+2013-12-11 04:36:46: The threadid is -1228063888, pid is 0
+2013-12-11 04:36:46: The threadid is -1238762640, pid is 0
+2013-12-11 04:36:46: The threadid is -1249461392, pid is 0
+2013-12-11 04:36:46: The threadid is -1260160144, pid is 0
+2013-12-11 04:36:46: The threadid is -1270858896, pid is 0
+2013-12-11 04:36:46: The threadid is -1281557648, pid is 0
+2013-12-11 04:36:46: The threadid is -1292256400, pid is 0
+2013-12-11 04:36:46: The threadid is -1302955152, pid is 0
+2013-12-11 04:36:46: The threadid is -1313653904, pid is 0
+2013-12-11 04:36:46: The threadid is -1324352656, pid is 0
+2013-12-11 04:36:46: The threadid is -1335051408, pid is 0
+2013-12-11 04:36:46: The threadid is -1345750160, pid is 0
+2013-12-11 04:36:46: The threadid is -1356448912, pid is 0
+2013-12-11 04:36:46: The threadid is -1367147664, pid is 0
+2013-12-11 04:36:46: The threadid is -1377846416, pid is 0
+2013-12-11 04:36:46: The threadid is -1388545168, pid is 0
+2013-12-11 04:36:46: The threadid is -1399243920, pid is 0
+2013-12-11 04:36:46: The threadid is -1409942672, pid is 0
+2013-12-11 04:36:46: The threadid is -1420641424, pid is 0
+2013-12-11 04:36:46: The threadid is -1431340176, pid is 0
+2013-12-11 04:36:46: Init send thread succeed
+2013-12-11 04:38:19: Read config file error.
+2013-12-11 04:38:19: Load base conf fail ...
+2013-12-11 04:38:19: The threadid is -1208255632, pid is 0
+2013-12-11 04:38:19: Init recv thread succeed
+2013-12-11 04:38:19: The threadid is -1218954384, pid is 0
+2013-12-11 04:38:19: The threadid is -1229653136, pid is 0
+2013-12-11 04:38:19: The threadid is -1240351888, pid is 0
+2013-12-11 04:38:19: The threadid is -1251050640, pid is 0
+2013-12-11 04:38:19: The threadid is -1261749392, pid is 0
+2013-12-11 04:38:19: The threadid is -1272448144, pid is 0
+2013-12-11 04:38:19: The threadid is -1283146896, pid is 0
+2013-12-11 04:38:19: The threadid is -1293845648, pid is 0
+2013-12-11 04:38:19: The threadid is -1304544400, pid is 0
+2013-12-11 04:38:19: The threadid is -1315243152, pid is 0
+2013-12-11 04:38:19: The threadid is -1325941904, pid is 0
+2013-12-11 04:38:19: The threadid is -1336640656, pid is 0
+2013-12-11 04:38:19: The threadid is -1347339408, pid is 0
+2013-12-11 04:38:19: The threadid is -1358038160, pid is 0
+2013-12-11 04:38:19: The threadid is -1368736912, pid is 0
+2013-12-11 04:38:19: The threadid is -1379435664, pid is 0
+2013-12-11 04:38:19: The threadid is -1390134416, pid is 0
+2013-12-11 04:38:19: The threadid is -1400833168, pid is 0
+2013-12-11 04:38:19: The threadid is -1411531920, pid is 0
+2013-12-11 04:38:19: The threadid is -1422230672, pid is 0
+2013-12-11 04:38:19: Init send thread succeed
+2013-12-11 04:53:58: Read config file error.
+2013-12-11 04:53:58: Load base conf fail ...
+2013-12-11 04:53:58: The threadid is -1216758928, pid is 0
+2013-12-11 04:53:58: Init recv thread succeed
+2013-12-11 04:53:58: The threadid is -1227457680, pid is 0
+2013-12-11 04:53:58: The threadid is -1238156432, pid is 0
+2013-12-11 04:53:58: The threadid is -1248855184, pid is 0
+2013-12-11 04:53:58: The threadid is -1259553936, pid is 0
+2013-12-11 04:53:58: The threadid is -1270252688, pid is 0
+2013-12-11 04:53:58: The threadid is -1280951440, pid is 0
+2013-12-11 04:53:58: The threadid is -1291650192, pid is 0
+2013-12-11 04:53:58: The threadid is -1302348944, pid is 0
+2013-12-11 04:53:58: The threadid is -1313047696, pid is 0
+2013-12-11 04:53:58: The threadid is -1323746448, pid is 0
+2013-12-11 04:53:58: The threadid is -1334445200, pid is 0
+2013-12-11 04:53:58: The threadid is -1345143952, pid is 0
+2013-12-11 04:53:58: The threadid is -1355842704, pid is 0
+2013-12-11 04:53:58: The threadid is -1366541456, pid is 0
+2013-12-11 04:53:58: The threadid is -1377240208, pid is 0
+2013-12-11 04:53:58: The threadid is -1387938960, pid is 0
+2013-12-11 04:53:58: The threadid is -1398637712, pid is 0
+2013-12-11 04:53:58: The threadid is -1409336464, pid is 0
+2013-12-11 04:53:58: The threadid is -1420035216, pid is 0
+2013-12-11 04:53:58: The threadid is -1430733968, pid is 0
+2013-12-11 04:53:58: Init send thread succeed
+2013-12-11 05:09:27: Read config file error.
+2013-12-11 05:09:27: Load base conf fail ...
+2013-12-11 05:09:27: The threadid is -1216926864, pid is 0
+2013-12-11 05:09:27: Init recv thread succeed
+2013-12-11 05:09:27: The threadid is -1227625616, pid is 0
+2013-12-11 05:09:27: The threadid is -1238324368, pid is 0
+2013-12-11 05:09:27: The threadid is -1249023120, pid is 0
+2013-12-11 05:09:27: The threadid is -1259721872, pid is 0
+2013-12-11 05:09:27: The threadid is -1270420624, pid is 0
+2013-12-11 05:09:27: The threadid is -1281119376, pid is 0
+2013-12-11 05:09:27: The threadid is -1291818128, pid is 0
+2013-12-11 05:09:27: The threadid is -1302516880, pid is 0
+2013-12-11 05:09:27: The threadid is -1313215632, pid is 0
+2013-12-11 05:09:27: The threadid is -1323914384, pid is 0
+2013-12-11 05:09:27: The threadid is -1334613136, pid is 0
+2013-12-11 05:09:27: The threadid is -1345311888, pid is 0
+2013-12-11 05:09:27: The threadid is -1356010640, pid is 0
+2013-12-11 05:09:27: The threadid is -1366709392, pid is 0
+2013-12-11 05:09:27: The threadid is -1377408144, pid is 0
+2013-12-11 05:09:27: The threadid is -1388106896, pid is 0
+2013-12-11 05:09:27: The threadid is -1398805648, pid is 0
+2013-12-11 05:09:27: The threadid is -1409504400, pid is 0
+2013-12-11 05:09:27: The threadid is -1420203152, pid is 0
+2013-12-11 05:09:27: The threadid is -1430901904, pid is 0
+2013-12-11 05:09:27: Init send thread succeed
+2013-12-11 05:10:38: Read config file error.
+2013-12-11 05:10:38: Load base conf fail ...
+2013-12-11 05:10:38: The threadid is -1208255632, pid is 0
+2013-12-11 05:10:38: Init recv thread succeed
+2013-12-11 05:10:38: The threadid is -1218954384, pid is 0
+2013-12-11 05:10:38: The threadid is -1229653136, pid is 0
+2013-12-11 05:10:38: The threadid is -1240351888, pid is 0
+2013-12-11 05:10:38: The threadid is -1251050640, pid is 0
+2013-12-11 05:10:38: The threadid is -1261749392, pid is 0
+2013-12-11 05:10:38: The threadid is -1272448144, pid is 0
+2013-12-11 05:10:38: The threadid is -1283146896, pid is 0
+2013-12-11 05:10:38: The threadid is -1293845648, pid is 0
+2013-12-11 05:10:38: The threadid is -1304544400, pid is 0
+2013-12-11 05:10:38: The threadid is -1315243152, pid is 0
+2013-12-11 05:10:38: The threadid is -1325941904, pid is 0
+2013-12-11 05:10:38: The threadid is -1336640656, pid is 0
+2013-12-11 05:10:38: The threadid is -1347339408, pid is 0
+2013-12-11 05:10:38: The threadid is -1358038160, pid is 0
+2013-12-11 05:10:38: The threadid is -1368736912, pid is 0
+2013-12-11 05:10:38: The threadid is -1379435664, pid is 0
+2013-12-11 05:10:38: The threadid is -1390134416, pid is 0
+2013-12-11 05:10:38: The threadid is -1400833168, pid is 0
+2013-12-11 05:10:38: The threadid is -1411531920, pid is 0
+2013-12-11 05:10:38: The threadid is -1422230672, pid is 0
+2013-12-11 05:10:38: Init send thread succeed
+2013-12-11 05:14:40: Read config file error.
+2013-12-11 05:14:40: Load base conf fail ...
+2013-12-11 05:14:40: The threadid is -1216677008, pid is 0
+2013-12-11 05:14:40: Init recv thread succeed
+2013-12-11 05:14:40: The threadid is -1227375760, pid is 0
+2013-12-11 05:14:40: The threadid is -1238074512, pid is 0
+2013-12-11 05:14:40: The threadid is -1248773264, pid is 0
+2013-12-11 05:14:40: The threadid is -1259472016, pid is 0
+2013-12-11 05:14:40: The threadid is -1270170768, pid is 0
+2013-12-11 05:14:40: The threadid is -1280869520, pid is 0
+2013-12-11 05:14:40: The threadid is -1291568272, pid is 0
+2013-12-11 05:14:40: The threadid is -1302267024, pid is 0
+2013-12-11 05:14:40: The threadid is -1312965776, pid is 0
+2013-12-11 05:14:40: The threadid is -1323664528, pid is 0
+2013-12-11 05:14:40: The threadid is -1334363280, pid is 0
+2013-12-11 05:14:40: The threadid is -1345062032, pid is 0
+2013-12-11 05:14:40: The threadid is -1355760784, pid is 0
+2013-12-11 05:14:40: The threadid is -1366459536, pid is 0
+2013-12-11 05:14:40: The threadid is -1377158288, pid is 0
+2013-12-11 05:14:40: The threadid is -1387857040, pid is 0
+2013-12-11 05:14:40: The threadid is -1398555792, pid is 0
+2013-12-11 05:14:40: The threadid is -1409254544, pid is 0
+2013-12-11 05:14:40: The threadid is -1419953296, pid is 0
+2013-12-11 05:14:40: The threadid is -1430652048, pid is 0
+2013-12-11 05:14:40: Init send thread succeed

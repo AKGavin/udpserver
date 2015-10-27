@@ -1,0 +1,744 @@
+/*
+ * tdmsparsehashwhitelist.cpp
+ *
+ *  Created on: Dec 11, 2013
+ *      Author: root
+ */
+
+#include "tdmsparsehashwhitelist.h"
+#include "tdmhttprequest.h"
+#include <string.h>
+#include <fstream>
+#include <time.h>
+#include "framecommon/framecommon.h"
+
+//#define HTTP_USE_DB 1
+#define THUNDER_USE_DB 1
+
+
+
+class ThunderSerializer {
+public:
+	bool operator()(FILE* fp,
+			const pair<const string, whiteList_data_t *> &value) {
+		// Write the key.  We ignore endianness for this example.
+		thunder_data_t *Thunderdata;
+		unsigned int size = sizeof(value.first);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		if (fwrite(&value.first, sizeof(value.first), 1, fp) != 1)
+			return false;
+		size = sizeof(whiteList_data_t);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		if (fwrite(value.second, size, 1, fp) != 1)
+			return false;
+		size = sizeof(thunder_data_t);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		Thunderdata = (thunder_data_t *) &value.second->data.data;
+		if (fwrite(Thunderdata, size, 1, fp) != 1)
+			return false;
+		return true;
+	}
+
+	bool operator()(FILE* fp, pair<const string, whiteList_data_t *>* value) {
+		// Read the key.  Note the need for const_cast to get around
+		// the fact hash_map keys are always const.
+		unsigned int size, tsize;
+		thunder_data_t *Thunderdata;
+		if (fread(&size, sizeof(unsigned int), 1, fp) != 1) //zong cahngdu
+			return false;
+		if (fread((char*) (&value->first), sizeof(value->first), 1, fp) != 1) //key
+			return false;
+		// Read the value.
+		// all strings are <= 255 chars long
+		if (fread(&size, sizeof(unsigned int), 1, fp) != 1) //value length
+			return false;
+		char* buf = new char[size];
+		if (fread(buf, size, 1, fp) != 1) { //value
+			delete[] buf;
+			return false;
+		}
+		if (fread(&tsize, sizeof(unsigned int), 1, fp) != 1) //length
+			return false;
+		char *buf1 = new char[size];
+		if (fread(buf1, size, 1, fp) != 1) {
+			delete[] buf1;
+			return false;
+		}
+		Thunderdata = (thunder_data_t *) (value->second->data.data);
+		new (&value->second) string(buf, tsize);
+		new (Thunderdata) string(buf1, tsize);
+
+		delete[] buf1;
+		delete[] buf;
+		return true;
+	}
+};
+
+struct HttpSerializer {
+	bool operator()(FILE* fp,
+			const pair<const string, whiteList_data_t *>& value) {
+		// Write the key.  We ignore endianness for this example.
+		http_data_t* httpData = NULL;
+		unsigned int size = sizeof(value.first);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		if (fwrite(&value.first, sizeof(value.first), 1, fp) != 1)
+			return false;
+		//whiteList_data_t
+		size = sizeof(whiteList_data_t);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		if (fwrite(value.second, size, 1, fp) != 1)
+			return false;
+
+		httpData = (http_data_t *) (value.second->data.data);
+		//1 client_ip
+		size = strlen(httpData->client_ip);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		if (fwrite(httpData->client_ip, size, 1, fp) != 1)
+			return false;
+		//2 req_agent
+		size = strlen(httpData->req_agent);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		if (fwrite(httpData->req_agent, size, 1, fp) != 1)
+			return false;
+		//3 req_cookie
+		size = strlen(httpData->req_cookie);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		if (fwrite(httpData->req_cookie, size, 1, fp) != 1)
+			return false;
+		//4 req_refer
+		size = strlen(httpData->req_refer);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		if (fwrite(httpData->req_refer, size, 1, fp) != 1)
+			return false;
+		//5 req_url
+		size = strlen(httpData->req_url);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		if (fwrite(httpData->req_url, size, 1, fp) != 1)
+			return false;
+		//6 server_ip
+		size = strlen(httpData->server_ip);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		if (fwrite(httpData->server_ip, size, 1, fp) != 1)
+			return false;
+		//7 sitename
+		size = strlen(httpData->sitename);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		if (fwrite(httpData->sitename, size, 1, fp) != 1)
+			return false;
+		//8 urlhash
+		size = strlen(httpData->urlhash);
+		if (fwrite(&size, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		if (fwrite(httpData->urlhash, size, 1, fp) != 1)
+			return false;
+
+		return true;
+	}
+	bool operator()(FILE* fp, pair<const string, whiteList_data_t *>* value) {
+		// Read the key.  Note the need for const_cast to get around
+		// the fact hash_map keys are always const.
+		unsigned int size1, size2, size3, size4, size5, size6, size7, size8,
+				size9;
+		if (fread(&size1, sizeof(unsigned int), 1, fp) != 1) //zong cahngdu
+			return false;
+		if (fread((char*) (&value->first), size1, 1, fp) != 1) //key
+			return false;
+		//whiteList_data_t
+		if (fread(&size1, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		char* buf1 = new char[size1 + 1];
+		if (fread(buf1, size1, 1, fp) != 1) { //value
+			delete[] buf1;
+			return false;
+		}
+		buf1[size1] = '\0';
+		//1 client_ip
+		if (fread(&size2, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		char* buf2 = new char[size2 + 1];
+		if (fread(buf2, size2, 1, fp) != 1) { //value
+			delete[] buf2;
+			return false;
+		}
+		buf2[size2] = '\0';
+		//2 req_agent
+		if (fread(&size3, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		char* buf3 = new char[size3 + 1];
+		if (fread(buf3, size3, 1, fp) != 1) { //value
+			delete[] buf3;
+			return false;
+		}
+		buf3[size3] = '\0';
+		//3 req_cookie
+		if (fread(&size4, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		char* buf4 = new char[size4 + 1];
+		if (fread(buf4, size4, 1, fp) != 1) { //value
+			delete[] buf4;
+			return false;
+		}
+		buf4[size4] = '\0';
+		//4 req_refer
+		if (fread(&size5, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		char* buf5 = new char[size5 + 1];
+		if (fread(buf5, size5, 1, fp) != 1) { //value
+			delete[] buf5;
+			return false;
+		}
+		buf5[size5] = '\0';
+		//5 req_url
+		if (fread(&size6, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		char* buf6 = new char[size6 + 1];
+		if (fread(buf6, size6, 1, fp) != 1) { //value
+			delete[] buf6;
+			return false;
+		}
+		buf6[size6] = '\0';
+		//6 server_ip
+		if (fread(&size7, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		char* buf7 = new char[size7 + 1];
+		if (fread(buf7, size7, 1, fp) != 1) { //value
+			delete[] buf7;
+			return false;
+		}
+		buf7[size7] = '\0';
+		//7 sitename
+		if (fread(&size8, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		char* buf8 = new char[size8 + 1];
+		if (fread(buf8, size8, 1, fp) != 1) { //value
+			delete[] buf8;
+			return false;
+		}
+		buf8[size8] = '\0';
+		//8 urlhash
+		if (fread(&size9, sizeof(unsigned int), 1, fp) != 1)
+			return false;
+		char* buf9 = new char[size9 + 1];
+		if (fread(buf9, size9, 1, fp) != 1) { //value
+			delete[] buf9;
+			return false;
+		}
+		buf9[size9] = '\0';
+
+		http_data_t* httpData = NULL;
+		httpData = (http_data_t *) (&value->second->data.data);
+		new (&value->second) string(buf1, size1);
+		new (httpData->client_ip) string(buf2, size2);
+		new (httpData->req_agent) string(buf3, size3);
+		new (httpData->req_cookie) string(buf4, size4);
+		new (httpData->req_refer) string(buf5, size5);
+		new (httpData->req_url) string(buf6, size6);
+		new (httpData->server_ip) string(buf7, size7);
+		new (httpData->sitename) string(buf8, size8);
+		new (httpData->urlhash) string(buf9, size9);
+		delete[] buf1;
+		delete[] buf2;
+		delete[] buf3;
+		delete[] buf4;
+		delete[] buf5;
+		delete[] buf6;
+		delete[] buf7;
+		delete[] buf8;
+		delete[] buf9;
+
+		return true;
+	}
+};
+
+
+
+int CTDMSparseHashWhiteList::findEntry( protocol_type_t protocol, char* urlhash, whiteList_data_t** whitelistItem )
+{
+	WriteRunInfo::WriteLog(" whitelist findEntry ...");
+		google::sparse_hash_map<string, whiteList_data_t *> *whitelistMap;
+		google::sparse_hash_map<string, whiteList_data_t *>::iterator l_it;
+
+		int lResult = 0;
+
+		switch(protocol){
+			case PROTOCOL_THUNDER:
+				whitelistMap = &ThunderWhiteList;
+				break;
+
+			case PROTOCOL_HTTP:
+				whitelistMap = &HttpWhiteList;
+				break;
+
+			case PROTOCOL_BT:
+				break;
+			case PROTOCOL_PPLIVE:
+				break;
+			case PROTOCOL_PPSTREAM:
+				break;
+			default:
+				//deal;
+				return -1;
+		}
+
+		string s = urlhash;
+		l_it = whitelistMap->find(s);
+		if(l_it != whitelistMap->end())
+		{
+			*whitelistItem = l_it->second;
+			lResult = 1;
+		}else
+		{
+			WriteRunInfo::WriteLog(" whitelist findEntry no find! ...");
+			lResult = -1;
+		}
+
+		if ( lResult == -1 ) {
+			int loadFromDB = -1;
+#ifdef HTTP_USE_DB
+			if ( protocol == PROTOCOL_HTTP ) {
+				loadFromDB = loadItemFromDB( protocol, urlhash, whitelistItem );
+			}
+#endif
+#ifdef THUNDER_USE_DB
+			if ( protocol == PROTOCOL_THUNDER ) {
+				loadFromDB = loadItemFromDB( protocol, urlhash, whitelistItem );
+			}
+#endif
+			if ( loadFromDB != -1 && *whitelistItem != NULL ) {
+				//add item
+				whitelistMap->insert( pair<string, whiteList_data_t*>(s, *whitelistItem) );
+				lResult = 1;
+			}
+		}
+		return lResult;
+}
+
+
+//-1: fail; 0: success; 1:exist
+int CTDMSparseHashWhiteList::addEntry( pkg_data_t* data, whiteList_status_t status, whiteList_data_t** whiteItem )
+{
+	int lResult = 1;
+	thunder_data_t* thunderData = NULL;
+	http_data_t* httpData = NULL;
+	whiteList_data_t* whitelistItem = NULL;
+
+	switch(data->type){
+		case PROTOCOL_THUNDER: {
+			thunderData = (thunder_data_t*) data->data;
+			if(findEntry(data->type, thunderData->m_strInfohash, &whitelistItem) == -1) {
+				whitelistItem = new whiteList_data_t();
+				whitelistItem->status 		= WHITELIST_STATUS_PENDING;
+				whitelistItem->createTime	= time(NULL);
+				whitelistItem->updateTime 	= time(NULL);
+				whitelistItem->dcmIp		= 0;
+				whitelistItem->dcmPort		= 0;
+
+				whitelistItem->data.type	= data->type;
+				whitelistItem->data.data	= malloc( sizeof(thunder_data_t) );
+				memcpy( (thunder_data_t*)whitelistItem->data.data, thunderData, sizeof(thunder_data_t) );
+
+				if( (ThunderWhiteList[thunderData->m_strInfohash] = whitelistItem) ) {
+					lResult = 0;
+					*whiteItem = whitelistItem;
+				}
+				else{
+					free( whitelistItem->data.data );
+					delete whitelistItem;
+					lResult = -1;
+				}
+			}
+			else {
+				*whiteItem = whitelistItem;
+				lResult = 1;
+			}
+			break;
+		}
+		case PROTOCOL_HTTP: {
+			httpData = (http_data_t*) data->data;
+			if( findEntry(data->type, httpData->urlhash, &whitelistItem) == -1 )
+			{
+				whitelistItem = new whiteList_data_t();
+				whitelistItem->status 		= WHITELIST_STATUS_PENDING;
+				whitelistItem->createTime	= time(NULL);
+				whitelistItem->updateTime 	= time(NULL);
+
+				whitelistItem->data.type	= data->type;
+
+				http_data_t* newData = (http_data_t*) malloc( sizeof(http_data_t) );
+				newData->client_ip = (char*) malloc( strlen(httpData->client_ip) + 1 );
+				strcpy( newData->client_ip, httpData->client_ip );
+
+				newData->server_ip = (char*) malloc( strlen(httpData->server_ip) + 1 );
+				strcpy( newData->server_ip, httpData->server_ip );
+
+				newData->sitename = (char*) malloc( strlen(httpData->sitename) + 1 );
+				strcpy( newData->sitename, httpData->sitename );
+
+				newData->urlhash = (char*) malloc( strlen(httpData->urlhash) + 1 );
+				strcpy( newData->urlhash, httpData->urlhash );
+
+				newData->req_url = (char*) malloc( strlen(httpData->req_url) + 1 );
+				strcpy( newData->req_url, httpData->req_url );
+
+				newData->req_agent = (char*) malloc( strlen(httpData->req_agent) + 1 );
+				strcpy( newData->req_agent, httpData->req_agent );
+
+				newData->req_refer = (char*) malloc( strlen(httpData->req_refer) + 1 );
+				strcpy( newData->req_refer, httpData->req_refer );
+
+				newData->req_cookie = (char*) malloc( strlen(httpData->req_cookie) + 1 );
+				strcpy( newData->req_cookie, httpData->req_cookie );
+
+				whitelistItem->data.data = newData;
+
+				if( (HttpWhiteList[httpData->urlhash] = whitelistItem) ) {
+					lResult = 0;
+					*whiteItem = whitelistItem;
+				}
+				else {
+					free( newData->client_ip );
+					free( newData->server_ip );
+					free( newData->sitename );
+					free( newData->urlhash );
+					free( newData->req_url );
+					free( newData->req_agent );
+					free( newData->req_refer );
+					free( newData->req_cookie );
+					free( newData );
+					delete whitelistItem;
+					lResult = -1;
+				}
+			}
+			else {
+				*whiteItem = whitelistItem;
+				lResult = 1;
+				WriteRunInfo::WriteLog(" whitelist addEntry: has exist! ...");
+			}
+			break;
+		}
+		default : {
+			//whitelistItem->status = WHITELIST_STATUS_DISABLED;
+			cout<<"PROTOCOL_UNKNOWN"<<endl;
+			lResult = -1;
+		}
+	}
+
+
+	if ( lResult == 0 && whitelistItem != NULL ) {
+#ifdef HTTP_USE_DB
+			if ( data->type == PROTOCOL_HTTP ) {
+				insertItemToDB( data->type, whitelistItem );
+			}
+#endif
+#ifdef THUNDER_USE_DB
+			if ( data->type == PROTOCOL_THUNDER ) {
+				insertItemToDB( data->type, whitelistItem );
+			}
+#endif
+	}
+
+	return lResult;
+}
+
+
+int CTDMSparseHashWhiteList::deleteEntry( protocol_type_t protocol, char* urlHash )
+{
+	int lResult = 0;
+	whiteList_data_t * whitelistItem = NULL;
+
+	//如果没有默认删除成功
+	if (findEntry(protocol, urlHash, &whitelistItem) == -1)
+		return 0;
+
+	switch (protocol) {
+	case PROTOCOL_THUNDER:
+		if (ThunderWhiteList.erase(urlHash) != 0)
+			lResult = 0;
+		break;
+
+	case PROTOCOL_HTTP:
+		if (HttpWhiteList.erase(urlHash) != 0)
+			lResult = 0;
+		break;
+	default:
+		//wating deal
+		break;
+	}
+
+	if (whitelistItem) {
+		if (whitelistItem->data.data) {
+			if (protocol == PROTOCOL_HTTP) {
+				http_data_t* data = (http_data_t*) whitelistItem->data.data;
+				if (data->client_ip)
+					free(data->client_ip);
+				if (data->server_ip)
+					free(data->server_ip);
+				if (data->sitename)
+					free(data->sitename);
+				if (data->urlhash)
+					free(data->urlhash);
+				if (data->req_url)
+					free(data->req_url);
+				if (data->req_agent)
+					free(data->req_agent);
+				if (data->req_refer)
+					free(data->req_refer);
+				if (data->req_cookie)
+					free(data->req_cookie);
+			}
+			free(whitelistItem->data.data);
+		} else {
+			WriteRunInfo::WriteLog(" whitelist deleteEntry failed! ...");
+			lResult = -1;
+		}
+		delete whitelistItem;
+	} else {
+		WriteRunInfo::WriteLog(" whitelist deleteEntry failed! ...");
+		lResult = -1;
+	}
+
+	if ( lResult != -1 ) {
+#ifdef THUNDER_USE_DB
+		if ( protocol == PROTOCOL_THUNDER ) {
+			this->deleteItemFromDB( protocol, urlHash );
+		}
+#endif
+#ifdef HTTP_USE_DB
+		if ( protocol == PROTOCOL_HTTP ) {
+			this->deleteItemFromDB( protocol, urlHash );
+		}
+#endif
+	}
+
+	return lResult;
+}
+
+
+int CTDMSparseHashWhiteList::changeEntryStatus( protocol_type_t protocol, char* urlHash, whiteList_status_t status, unsigned long dcmIp, whiteList_data_t** whiteItem)
+{
+		whiteList_data_t *whitelistItem = NULL;
+		int flag = findEntry(protocol, urlHash ,&whitelistItem);
+		if(flag < 0) {
+			WriteRunInfo::WriteLog(" whitelist changeEntry failed! ...");
+			return -1;
+		}
+
+		whitelistItem->status = status;
+		whitelistItem->updateTime = time(NULL);
+		if ( dcmIp > 0 ) whitelistItem->dcmIp = dcmIp;
+
+		*whiteItem = whitelistItem;
+
+#ifdef THUNDER_USE_DB
+		if ( protocol == PROTOCOL_THUNDER ) {
+			this->updateItemToDB( protocol, urlHash, status, dcmIp, whitelistItem->updateTime );
+		}
+#endif
+#ifdef HTTP_USE_DB
+		if ( protocol == PROTOCOL_HTTP ) {
+			this->updateItemToDB( protocol, urlHash, status, dcmIp, whitelistItem->updateTime );
+		}
+#endif
+
+		return 0;
+}
+
+
+int CTDMSparseHashWhiteList::flushEntries( protocol_type_t proto )
+{
+	//whiteList_data_t *whitelistItem;
+	//遍历一下容器查找
+		//获取当前时间，当前时间-createtime》604800秒  （一星期）
+		//进行删除或者加入黑名单
+	time_t NewTime;
+	NewTime = time(NULL);
+	google::sparse_hash_map<string, whiteList_data_t *> *whitelistMap;
+	google::sparse_hash_map<string, whiteList_data_t *>::iterator l_it;
+	switch(proto)
+	{
+		case PROTOCOL_THUNDER:
+			whitelistMap = &ThunderWhiteList;
+			break;
+		case PROTOCOL_HTTP:
+			whitelistMap = &HttpWhiteList;
+			break;
+		default:
+			break;
+
+	}
+
+	whiteList_data_t *whitelistItem = NULL;
+	for(l_it = whitelistMap->begin(); l_it != whitelistMap->end();)
+	{
+		whitelistItem = l_it->second;
+		if ( whitelistItem == NULL ) {
+			whitelistMap->erase(l_it++);
+			continue;
+		}
+
+		if ( whitelistItem->status != WHITELIST_STATUS_PENDING ) {
+			l_it++;
+			continue;
+		}
+
+		if((NewTime - whitelistItem->updateTime) <= 604800) {
+			l_it++;
+			continue;
+		}
+
+		whitelistMap->erase(l_it++);
+		if ( proto == PROTOCOL_HTTP ) {
+			http_data_t* data = (http_data_t*) whitelistItem->data.data;
+			if (data->client_ip) free( data->client_ip );
+			if (data->server_ip) free( data->server_ip );
+			if (data->sitename) free( data->sitename );
+			if (data->urlhash) free( data->urlhash );
+			if (data->req_url) free( data->req_url );
+			if (data->req_agent) free( data->req_agent );
+			if (data->req_refer) free( data->req_refer );
+			if (data->req_cookie) free( data->req_cookie );
+		}
+		free( whitelistItem->data.data );
+		delete whitelistItem;
+	}
+	return 0;
+}
+
+
+int CTDMSparseHashWhiteList::saveAllEntriesToFile( protocol_type_t protocol )
+{
+	int Result = 1;
+	char filename[64];
+
+	google::sparse_hash_map<string, whiteList_data_t *> *TempWhiteList;
+	google::sparse_hash_map<string, whiteList_data_t *>::const_iterator l_it;
+		switch(protocol){
+			case PROTOCOL_THUNDER:
+				strcpy(filename, "tdmthunder.log");
+				break;
+			case PROTOCOL_HTTP:
+				strcpy(filename, "tdmhttpinfo.log");
+				break;
+			case PROTOCOL_BT:
+				break;
+			case PROTOCOL_PPLIVE:
+				break;
+			case PROTOCOL_PPSTREAM:
+				break;
+			default:
+				return Result;
+		}
+
+		FILE* fp = fopen(filename, "wb");
+		if (!fp)
+		{
+			WriteRunInfo::WriteLog(" whitelist savefileEntry failed! ...");
+			cout << "File is open fail!" << endl;
+			Result = -1;
+		}
+
+
+		switch(protocol){
+			case PROTOCOL_THUNDER:
+				TempWhiteList = &ThunderWhiteList;
+				break;
+
+			case PROTOCOL_HTTP:
+				TempWhiteList = &HttpWhiteList;
+				break;
+
+			default:
+				break;
+		}
+		l_it = (*TempWhiteList).begin();
+		while (l_it != (*TempWhiteList).end())
+		{
+			switch(protocol){
+			case PROTOCOL_THUNDER:
+				if(!TempWhiteList->serialize(ThunderSerializer(), fp))
+					Result = -1;
+				break;
+			case PROTOCOL_HTTP:
+				if(!TempWhiteList->serialize(HttpSerializer(), fp))
+					Result = -1;
+				break;
+			default:
+				Result = -1;
+				break;
+			}
+			l_it++;
+		}
+		fclose(fp);
+		return Result;
+}
+
+
+int CTDMSparseHashWhiteList::loadAllEntriesFromFile( protocol_type_t protocol )
+{
+	int Result = 1;
+	char filename[64];
+
+	whiteList_data_t *whitelistItem;
+	whitelistItem = new whiteList_data_t;
+
+	google::sparse_hash_map<string, whiteList_data_t *> *TempWhiteList;
+	google::sparse_hash_map<string, whiteList_data_t *>::const_iterator l_it;
+		switch(protocol){
+			case PROTOCOL_THUNDER:
+				strcpy(filename, "tdmthunder.log");
+				TempWhiteList = &ThunderWhiteList;
+				break;
+			case PROTOCOL_HTTP:
+				strcpy(filename, "tdmhttpinfo.log");
+				TempWhiteList = &HttpWhiteList;
+				break;
+			case PROTOCOL_BT:
+			whitelistItem->createTime	= time(NULL);
+				break;
+			case PROTOCOL_PPLIVE:
+				break;
+			case PROTOCOL_PPSTREAM:
+				break;
+			default:
+				return Result;
+		}
+
+		 FILE* fp = fopen(filename, "rb");
+		 if(!fp)
+		 {
+			 cout<<"fopen failed\n"<<endl;
+		 	 return -1;
+		 }
+		 while(1)//???
+		 {
+			 switch(protocol){
+			 	 case PROTOCOL_THUNDER:
+			 		 if(!TempWhiteList->unserialize(ThunderSerializer(), fp))
+			 			 Result = -1;
+			 		break;
+			 	 case PROTOCOL_HTTP:
+			 		 if(!TempWhiteList->unserialize(HttpSerializer(), fp))
+			 			 Result = -1;
+			 		 break;
+			 	 default:
+			 		 break;
+			 }
+		 }
+		fclose(fp);
+
+	return 0;
+}
+
+

@@ -1,0 +1,14 @@
+include makefile.comm
+TARGET=$(SERVER_ROOT)/lib/libsrvframe.a
+EXE=$(SERVER_ROOT)/MonitorServer
+OBJ=$(SERVER_ROOT)/obj/*.o
+
+all:$(EXE) $(TARGET)
+
+$(TARGET):$(OBJ)
+	ar rcs $@ $^
+
+$(EXE):$(OBJ)
+	$(CXX) $^ -o $@ $(INCLUDE) $(CFLAGS) $(LIBS) /usr/lib/libuuid.so  /usr/lib/i386-linux-gnu/libmysqlclient.so -lesmtp -lpthread
+clean:
+	rm -f $(TARGET)
